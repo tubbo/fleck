@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+#
+# Fleck CLI
+
+require 'fleck'
+
+Fleck::CLI.start!
