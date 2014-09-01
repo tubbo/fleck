@@ -4,4 +4,4 @@
 
 require 'fleck'
 
-Fleck::CLI.start!
+Fleck::CLI.start
