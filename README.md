@@ -7,8 +7,7 @@ An inflection-based command line search tool. Utilizes [ActiveSupport::Inflector
 If you're on Mac OS, install with [Homebrew][brew]:
 
 ```bash
-$ brew tap tubbo/brewery
-$ brew install fleck
+$ brew install tubbo/homebrew/fleck
 ```
 
 You can also install with [RubyGems][gem] on any platform that supports Ruby:
@@ -19,19 +18,59 @@ $ gem install fleck
 
 ## Usage
 
-
 Search all files recursively in the current directory that match both
 `"ContentFile"` and `"ContentFile".tableize`, which is `"content_file"`:
 
 ```bash
-$ fleck 'ContentFile' --inflectors=underscore
+$ fleck search 'ContentFile' --inflectors=underscore
+```
+
+Since *search* is the default command, you can just type the following
+to search project-wide:
+
+```bash
+$ fleck 'ContentFile'
 ```
 
 Replace `ContentFile` and `content_file` with `Video` and `video`,
 respectively:
 
 ```bash
-$ fleck 'ContentFile' --inflectors=underscore --replace-with=Video
+$ fleck replace 'ContentFile' 'Video' --inflectors=underscore
+```
+
+You can also use Fleck to find words within a file:
+
+```bash
+$ fleck find 'ContentFile' app/models/content_file.rb
+```
+
+It supports all of the other method options.
+
+### Method Options
+
+- **inflectors:** Control the inflectors that are additionally queried
+- **exclude:** Provide glob patterns to omit from searching
+
+## Configuration
+
+Add a **~/.fleck.yml** file with default values for the method options:
+
+```yaml
+inflectors:
+  - underscore
+exclude:
+  - vendor
+  - pkg
+  - tmp
+```
+
+Now, you can just type the basic commands to do your searches:
+
+```bash
+$ fleck ContentFile
+$ fleck search ContentFile
+$ fleck replace ContentFile Video
 ```
 
 ## Contributing

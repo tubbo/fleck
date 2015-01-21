@@ -5,7 +5,11 @@ module Fleck
   class Search
     include ActiveModel::Model
 
-    attr_accessor :query, :tool, :inflections
+    attr_accessor :query, :search_tool, :inflections
+
+    def self.for(term, options)
+      new options.merge(query: term)
+    end
 
     def results
       inflected_search(query) || non_inflected_search
@@ -30,8 +34,8 @@ module Fleck
       { query => search_on(query) }
     end
 
-    def search_on(term)
-      `#{tool} #{term}`.split "\n"
+    def search_on(given_term)
+      `#{search_tool} #{given_term}`.split "\n"
     end
   end
 end

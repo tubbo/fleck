@@ -8,22 +8,16 @@ module Fleck
 
     desc "search [TERM]", "Search files"
     method_option :search_tool, aliases: '-t', default: 'grep'
-    method_option :replace_with, aliases: '-r'
-    method_option :inflections, aliases: '-i'
+    method_option :inflectors, aliases: '-i', kind: Array
+    method_option :exclude, aliases: '-e', kind: Array
     def search(term)
-      inflections = options[:inflections].split(',')
-      search = Search.new \
-        query: term,
-        tool: options[:search_tool],
-        inflections: inflections
+      search = Search.for term, options
 
       if search.results.any?
-        search.results.each do |inflection, search_result|
-          say ">> #{inflection}:"
-          say search_result
+        search.results.each do |inflection|
+          say ">> #{inflection.name}:"
+          inflection.results.each { |result| say result }
         end
-
-        replace search, options[:replace_with], inflections if replace?
       else
         say "No results found"
       end
